@@ -17,13 +17,11 @@ Lv1 ~ Lv2, Lv4
 
 Lv3
 
-기능            메서드      URL              request                                       response        상태코드
-
-사람 등록       POST        /memberV2        요청 body                                      등록 완료        201 CREATED
-
-일정 등록       POST        /scheduleV2      요청 body                                      등록 결과        201 CREATED
-
-일정 전체 조회   GET        /scheduleV2      요청 param                                      조회 결과       200 OK
+|기능|메서드|URL|request|response|상태코드|
+|---|---|---|---|---|---|
+|사람 등록|POST|/memberV2|요청 body|등록 완료|201 CREATED|
+|일정 등록|POST|/scheduleV2|요청 body|등록 결과|201 CREATED|
+|일정 전체 조회|GET|/scheduleV2|요청 param|조회 결과|200 OK|
 
 
 ERD 다이어그램
