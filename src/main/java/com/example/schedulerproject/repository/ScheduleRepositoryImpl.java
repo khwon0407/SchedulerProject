@@ -88,7 +88,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
 
     @Override
     public List<FindScheduleResponseDto> findAllScheduleWithUserId(Long userId) {
-        return jdbcTemplate.query("select * from scheduleV2 s join memberV2 m on s.user_id = m.id where user_id = ? order by modified_at desc", scheduleRowMapper(), userId);
+        return jdbcTemplate.query("select * from scheduleV2 s join userV2 m on s.user_id = m.id where user_id = ? order by s.modified_at desc", scheduleRowMapper(), userId);
     }
 
     //Lv 1. 일정 단건 조회
@@ -127,6 +127,32 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     @Override
     public int deleteMemoById(Long id) {
         return jdbcTemplate.update("delete from schedule where id = ?", id);
+    }
+
+    @Override
+    public SaveScheduleResponseDto saveScheduleWithUserId(Schedule newSchedule) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("scheduleV2").usingGeneratedKeyColumns("id");
+
+        Map<String, Object> parameters = new HashMap<>();
+        Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
+        parameters.put("title", newSchedule.getTitle());
+        parameters.put("contents", newSchedule.getContents());
+        parameters.put("name", newSchedule.getName());
+        parameters.put("password", newSchedule.getPassword());
+        parameters.put("created_at", createdAt);
+        parameters.put("modified_at", createdAt);
+        parameters.put("user_id", newSchedule.getUserId());
+
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+
+        return new SaveScheduleResponseDto(key.longValue(),
+                newSchedule.getTitle(),
+                newSchedule.getContents(),
+                newSchedule.getName(),
+                newSchedule.getPassword(),
+                createdAt,
+                createdAt);
     }
 
     private RowMapper<FindScheduleResponseDto> scheduleRowMapper() {

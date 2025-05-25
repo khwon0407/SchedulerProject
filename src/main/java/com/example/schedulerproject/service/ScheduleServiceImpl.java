@@ -1,6 +1,7 @@
 package com.example.schedulerproject.service;
 
 import com.example.schedulerproject.dto.*;
+import com.example.schedulerproject.entity.Member;
 import com.example.schedulerproject.entity.Schedule;
 import com.example.schedulerproject.repository.MemberRepository;
 import com.example.schedulerproject.repository.ScheduleRepository;
@@ -29,6 +30,21 @@ public class ScheduleServiceImpl implements ScheduleService{
         );
 
         return scheduleRepository.saveSchedule(newSchedule);
+    }
+
+    @Override
+    public SaveScheduleResponseDto saveScheduleWithUserId(Long userId, SaveScheduleRequestDtoV2 requestDto) {
+        Member findMember = memberRepository.findMember(userId);
+
+        Schedule newSchedule = new Schedule(
+                requestDto.getTitle(),
+                requestDto.getContents(),
+                findMember.getName(),
+                requestDto.getPassword(),
+                userId
+        );
+
+        return scheduleRepository.saveScheduleWithUserId(newSchedule);
     }
 
     @Override

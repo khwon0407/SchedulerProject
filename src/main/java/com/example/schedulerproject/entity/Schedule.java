@@ -34,4 +34,12 @@ public class Schedule {
         this.name = name;
         this.password = password;
     }
+
+    public Schedule(String title, String contents, String name, String password, Long userId) {
+        this.title = title;
+        this.contents = contents;
+        this.name = name;
+        this.password = password;
+        this.userId = userId;
+    }
 }
