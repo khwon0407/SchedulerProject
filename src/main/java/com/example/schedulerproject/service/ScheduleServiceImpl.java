@@ -67,6 +67,19 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
+    public FindScheduleResponseDto findOneScheduleV2(Long id) {
+        Schedule findSchedule = scheduleRepository.findOneScheduleV2(id);
+
+        return new FindScheduleResponseDto(
+                findSchedule.getId(),
+                findSchedule.getTitle(),
+                findSchedule.getContents(),
+                findSchedule.getName(),
+                findSchedule.getModifiedAt()
+        );
+    }
+
+    @Override
     public Page<FindScheduleResponseDto> findScheduleWithPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "modifiedAt"));
         List<FindScheduleResponseDto> content = scheduleRepository.findScheduleWithPage(pageable);
@@ -114,6 +127,36 @@ public class ScheduleServiceImpl implements ScheduleService{
         );
     }
 
+    @Transactional
+    @Override
+    public UpdateScheduleResponseDto updateScheduleV2(Long id, UpdateScheduleRequestDto requestDto) {
+        if(requestDto.getTitle() == null || requestDto.getContents() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The title and content are required values.");
+        }
+
+        Schedule findSchedule = scheduleRepository.findOneScheduleV2(id);
+
+        if(!findSchedule.getPassword().equals(requestDto.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Password.");
+        }
+
+        int updateRow = scheduleRepository.updateScheduleV2(id, requestDto);
+
+        if(updateRow == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+        }
+
+        Schedule schedule = scheduleRepository.findOneScheduleV2(id);
+
+        return new UpdateScheduleResponseDto(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContents(),
+                schedule.getName(),
+                schedule.getModifiedAt()
+        );
+    }
+
     @Override
     public void deleteScheduleById(Long id, DeleteScheduleRequestDto requestDto) {
         Schedule findSchedule = scheduleRepository.findOneSchedule(id);
@@ -122,7 +165,22 @@ public class ScheduleServiceImpl implements ScheduleService{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Password.");
         }
 
-        int deleteRow = scheduleRepository.deleteMemoById(id);
+        int deleteRow = scheduleRepository.deleteScheduleById(id);
+
+        if(deleteRow == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+        }
+    }
+
+    @Override
+    public void deleteScheduleByIdV2(Long id, DeleteScheduleRequestDto requestDto) {
+        Schedule findSchedule = scheduleRepository.findOneScheduleV2(id);
+
+        if(!findSchedule.getPassword().equals(requestDto.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Password.");
+        }
+
+        int deleteRow = scheduleRepository.deleteScheduleByIdV2(id);
 
         if(deleteRow == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);

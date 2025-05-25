@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.sql.Timestamp;
 
+//LV 1. 스케쥴 테이블 추가
 @Getter
 @AllArgsConstructor
 public class Schedule {

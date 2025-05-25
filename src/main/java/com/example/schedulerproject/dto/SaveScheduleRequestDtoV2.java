@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+//Lv 3. 테이블 분리
+//Lv 6. 무결성 감사
 @Getter
 @RequiredArgsConstructor
 public class SaveScheduleRequestDtoV2 {

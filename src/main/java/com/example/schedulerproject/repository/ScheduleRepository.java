@@ -1,9 +1,6 @@
 package com.example.schedulerproject.repository;
 
-import com.example.schedulerproject.dto.FindScheduleRequestDto;
-import com.example.schedulerproject.dto.FindScheduleResponseDto;
-import com.example.schedulerproject.dto.SaveScheduleResponseDto;
-import com.example.schedulerproject.dto.UpdateScheduleRequestDto;
+import com.example.schedulerproject.dto.*;
 import com.example.schedulerproject.entity.Schedule;
 import org.springframework.data.domain.Pageable;
 
@@ -16,7 +13,7 @@ public interface ScheduleRepository {
 
     int updateSchedule(Long id, UpdateScheduleRequestDto requestDto);
 
-    int deleteMemoById(Long id);
+    int deleteScheduleById(Long id);
 
     List<FindScheduleResponseDto> findAllScheduleWithUserId(Long userId);
 
@@ -27,4 +24,11 @@ public interface ScheduleRepository {
     SaveScheduleResponseDto saveScheduleWithUserId(Schedule newSchedule);
 
     List<FindScheduleResponseDto> findScheduleWithPageV2(Pageable pageable);
+
+    int updateScheduleV2(Long id, UpdateScheduleRequestDto requestDto);
+
+
+    Schedule findOneScheduleV2(Long id);
+
+    int deleteScheduleByIdV2(Long id);
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+//Lv 6. 무결성 검사
 @Getter
 @RequiredArgsConstructor
 public class UpdateScheduleRequestDto {

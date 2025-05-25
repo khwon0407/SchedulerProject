@@ -1,9 +1,6 @@
 package com.example.schedulerproject.controller;
 
-import com.example.schedulerproject.dto.FindScheduleRequestDto;
-import com.example.schedulerproject.dto.FindScheduleResponseDto;
-import com.example.schedulerproject.dto.SaveScheduleRequestDtoV2;
-import com.example.schedulerproject.dto.SaveScheduleResponseDto;
+import com.example.schedulerproject.dto.*;
 import com.example.schedulerproject.entity.Member;
 import com.example.schedulerproject.service.MemberService;
 import com.example.schedulerproject.service.ScheduleService;
@@ -53,5 +50,24 @@ public class ScheduleControllerV2 {
         Page<FindScheduleResponseDto> pagingSchedule = scheduleService.findScheduleWithPageV2(page, size);
 
         return new ResponseEntity<>(pagingSchedule, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UpdateScheduleResponseDto> updateScheduleV2(
+            @PathVariable Long id,
+            @RequestBody @Valid UpdateScheduleRequestDto requestDto
+    ) {
+        UpdateScheduleResponseDto updatedSchedule = scheduleService.updateScheduleV2(id, requestDto);
+
+        return new ResponseEntity<>(updatedSchedule, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteScheduleV2(
+            @PathVariable Long id,
+            @RequestBody @Valid DeleteScheduleRequestDto requestDto
+    ) {
+        scheduleService.deleteScheduleByIdV2(id, requestDto);
+        return new ResponseEntity<>(HttpStatus.OK); //Void는 상태코드만 반환
     }
 }

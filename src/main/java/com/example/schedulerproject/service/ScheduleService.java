@@ -21,4 +21,10 @@ public interface ScheduleService {
     SaveScheduleResponseDto saveScheduleWithUserId(Long userId, SaveScheduleRequestDtoV2 requestDto);
 
     Page<FindScheduleResponseDto> findScheduleWithPageV2(int page, int size);
+
+    UpdateScheduleResponseDto updateScheduleV2(Long id, UpdateScheduleRequestDto requestDto);
+
+    FindScheduleResponseDto findOneScheduleV2(Long id);
+
+    void deleteScheduleByIdV2(Long id, DeleteScheduleRequestDto requestDto);
 }

@@ -100,6 +100,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     }
 
     @Override
+    public Schedule findOneScheduleV2(Long id) {
+        List<Schedule> result = jdbcTemplate.query("select * from scheduleV2 where id = ?", scheduleRowMapperV2(), id);
+        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
+    }
+
+    //Lv 4. 페이징
+    @Override
     public List<FindScheduleResponseDto> findScheduleWithPage(Pageable pageable) {
         String sql = "SELECT * FROM schedule ORDER BY modified_at DESC LIMIT ? OFFSET ?";
         return jdbcTemplate.query(
@@ -110,6 +117,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
         );
     }
 
+    //Lv 3, 4 테이블 분리 및 페이징
     @Override
     public List<FindScheduleResponseDto> findScheduleWithPageV2(Pageable pageable) {
         String sql = "SELECT * FROM scheduleV2 ORDER BY modified_at DESC LIMIT ? OFFSET ?";
@@ -127,9 +135,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
+    //Lv 2. 스케쥴 업데이트
     @Override
     public int updateSchedule(Long id, UpdateScheduleRequestDto requestDto) {
         Timestamp modifiedAt = Timestamp.valueOf(LocalDateTime.now());
+        System.out.println("name: " + requestDto.getName());
+        System.out.println("title: " + requestDto.getTitle());
+        System.out.println("contents: " + requestDto.getContents());
         if (requestDto.getName() == null) {
             return jdbcTemplate.update("update schedule set title = ?, contents = ?, modified_at = ? where id = ?", requestDto.getTitle(), requestDto.getContents(), modifiedAt, id);
         }
@@ -137,10 +149,24 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     }
 
     @Override
-    public int deleteMemoById(Long id) {
+    public int updateScheduleV2(Long id, UpdateScheduleRequestDto requestDto) {
+        Timestamp modifiedAt = Timestamp.valueOf(LocalDateTime.now());
+
+        return jdbcTemplate.update("update scheduleV2 set title = ?, contents = ?, modified_at = ? where id = ?", requestDto.getTitle(), requestDto.getContents(), modifiedAt, id);
+    }
+
+    //Lv 2. 스케쥴 삭제
+    @Override
+    public int deleteScheduleById(Long id) {
         return jdbcTemplate.update("delete from schedule where id = ?", id);
     }
 
+    @Override
+    public int deleteScheduleByIdV2(Long id) {
+        return jdbcTemplate.update("delete from scheduleV2 where id = ?", id);
+    }
+
+    //Lv 3. 테이블 분리 및 검색
     @Override
     public SaveScheduleResponseDto saveScheduleWithUserId(Schedule newSchedule) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);

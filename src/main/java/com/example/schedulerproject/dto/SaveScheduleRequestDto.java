@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Date;
 
 //Level 1. 일정 생성
+//Lv 6. 무결성 검사
 @Getter
 @RequiredArgsConstructor
 public class SaveScheduleRequestDto {

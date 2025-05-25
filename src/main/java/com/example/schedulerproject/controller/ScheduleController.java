@@ -21,6 +21,7 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
+    //Lv 1. 일정 저장
     @PostMapping
     public ResponseEntity<SaveScheduleResponseDto> saveSchedule(
             @RequestBody @Valid SaveScheduleRequestDto requestDto
@@ -30,6 +31,7 @@ public class ScheduleController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
+    //Lv 1. 전체 일정 검색
     @GetMapping
     public ResponseEntity<List<FindScheduleResponseDto>> findAllSchedule(
             @RequestBody @Valid FindScheduleRequestDto requestDto
@@ -39,6 +41,7 @@ public class ScheduleController {
         return new ResponseEntity<>(listAllSchedule, HttpStatus.OK);
     }
 
+    //Lv 1. 단건 검색
     @GetMapping("/{id}")
     public ResponseEntity<FindScheduleResponseDto> findOneSchedule(
             @PathVariable Long id
@@ -48,6 +51,7 @@ public class ScheduleController {
         return new ResponseEntity<>(findSchedule, HttpStatus.OK);
     }
 
+    //Lv 4. 페이징 검색
     @GetMapping("/page")
     public ResponseEntity<Page<FindScheduleResponseDto>> findScheduleWithPage(
             @RequestParam int page,
@@ -58,6 +62,7 @@ public class ScheduleController {
         return new ResponseEntity<>(pagingSchedule, HttpStatus.OK);
     }
 
+    //Lv 2. 스케쥴 업데이트
     @PatchMapping("/{id}")
     public ResponseEntity<UpdateScheduleResponseDto> updateSchedule(
             @PathVariable Long id,
@@ -68,6 +73,7 @@ public class ScheduleController {
         return new ResponseEntity<>(updatedSchedule, HttpStatus.OK);
     }
 
+    //Lv 2. 스케쥴 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSchedule(
             @PathVariable Long id,

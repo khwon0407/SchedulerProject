@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
+//Lv 3. 멤버 테이블 추가
 @Getter
 @RequiredArgsConstructor
 public class Member {
