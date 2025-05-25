@@ -19,7 +19,7 @@
 
 |기능|메서드|URL|request|response|상태코드|
 |---|---|---|---|---|---|
-|사람 등록|POST|/memberV2|{"name": String, "email": String}|등록 완료|201 CREATED|
+|사람 등록|POST|/memberV2|{"name": String, "email": String}|등록 정보|201 CREATED|
 |일정 등록|POST|/scheduleV2|{"title": String, "contents": String, "password": String }, ?userId=int|등록 결과|201 CREATED|
 |일정 전체 조회|GET|/scheduleV2|?userId=int|조회 결과|200 OK|
 |일정 단건 조회|GET|/scheduleV2/{id}|X|조회 결과|200 OK|
