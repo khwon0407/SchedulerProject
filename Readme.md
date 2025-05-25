@@ -19,9 +19,13 @@ Lv3
 
 |기능|메서드|URL|request|response|상태코드|
 |---|---|---|---|---|---|
-|사람 등록|POST|/memberV2|요청 body|등록 완료|201 CREATED|
-|일정 등록|POST|/scheduleV2|요청 body|등록 결과|201 CREATED|
-|일정 전체 조회|GET|/scheduleV2|요청 param|조회 결과|200 OK|
+|사람 등록|POST|/memberV2|요청 body(이름, 이메일)|등록 완료|201 CREATED|
+|일정 등록|POST|/scheduleV2|요청 body(제목, 내용, 비밀번호), 요청 param(유저 ID)|등록 결과|201 CREATED|
+|일정 전체 조회|GET|/scheduleV2|요청 param(유저 ID)|조회 결과|200 OK|
+|일정 단건 조회|GET|/scheduleV2/{id}|X|조회 결과|200 OK|
+|일정 페이지 조회|GET|/scheduleV2/page|요청 param(페이지 넘버, 페이즈 크기)|조회 결과|200 OK|
+|일정 수정|PATCH|/scheduleV2/{id}|요청 body(제목, 내용, 비밀번호)|수정 결과|200 OK|
+|일정 삭제|DELETE|/scheduleV2/{id}|요청 body(비밀번호)|X|200 OK
 
 
 ERD 다이어그램
