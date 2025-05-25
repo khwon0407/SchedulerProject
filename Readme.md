@@ -1,4 +1,4 @@
-# API 명세서
+### API 명세서
 
 
 
@@ -42,3 +42,21 @@ Lv3 schedule이 foriegn key로 user table의 primary key를 가짐
 최종 작성
 
 ![erd-complete](https://github.com/user-attachments/assets/d5451707-5161-4447-88df-4e3dc00a21c9)
+
+
+
+# 1. 적절한 관심사 분리를 적용하셨나요? (Controller, Service, Repository)
+
+Controller, Service, Repository 분리 완료
+
+# 2. RESTful한 API를 설계하셨나요? 어떤 부분이 그런가요? 어떤 부분이 그렇지 않나요?
+
+역할 별로 Get, Post, Patch, Delete를 잘 매칭 시켰으나 그 이름에 대해서는 적절하지 않을 수 있다고 판단
+
+# 3. 수정, 삭제 API의 request를 어떤 방식으로 사용 하셨나요? (param, query, body)
+
+수정의 경우 Lv 1, 2 에서는 body에 정보를 담아서 보냈고, 바꾸고자 하는 일정의 id는 query로 받았다
+
+Lv 3에서도 똑같이 구현하였다.
+
+삭제의 경우 query로 id를 받고 body에 비밀번호를 받아 구현하였으며, Lv 2, 3 공통이다.
