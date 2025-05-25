@@ -1,6 +1,7 @@
 package com.example.schedulerproject.controller;
 
 import com.example.schedulerproject.dto.CreateMemberRequestDto;
+import com.example.schedulerproject.dto.CreateMemberResponseDto;
 import com.example.schedulerproject.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,9 @@ public class MemberControllerV2 {
 
     private final MemberService memberService;
     @PostMapping
-    public ResponseEntity<String> createMember(@RequestBody @Valid CreateMemberRequestDto requestDto) {
-        memberService.createMember(requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원 생성 완료");
+    public ResponseEntity<CreateMemberResponseDto> createMember(@RequestBody @Valid CreateMemberRequestDto requestDto) {
+        CreateMemberResponseDto newMember = memberService.createMember(requestDto);
+        //return ResponseEntity.status(HttpStatus.CREATED).body("회원 생성 완료");
+        return new ResponseEntity<>(newMember, HttpStatus.CREATED);
     }
 }

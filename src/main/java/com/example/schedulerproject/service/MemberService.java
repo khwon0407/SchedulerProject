@@ -1,7 +1,8 @@
 package com.example.schedulerproject.service;
 
 import com.example.schedulerproject.dto.CreateMemberRequestDto;
+import com.example.schedulerproject.dto.CreateMemberResponseDto;
 
 public interface MemberService {
-    void createMember(CreateMemberRequestDto requestDto);
+    CreateMemberResponseDto createMember(CreateMemberRequestDto requestDto);
 }
