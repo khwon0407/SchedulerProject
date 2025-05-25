@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//Lv 3. 테이블 추가 및 분리
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/memberV2")

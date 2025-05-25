@@ -92,6 +92,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     }
 
     //Lv 1. 일정 단건 조회
+    //Lv 5. 예외 처리
     @Override
     public Schedule findOneSchedule(Long id) {
         List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapperV2(), id);
@@ -101,6 +102,17 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     @Override
     public List<FindScheduleResponseDto> findScheduleWithPage(Pageable pageable) {
         String sql = "SELECT * FROM schedule ORDER BY modified_at DESC LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(
+                sql,
+                scheduleRowMapper(),
+                pageable.getPageSize(),
+                pageable.getOffset()
+        );
+    }
+
+    @Override
+    public List<FindScheduleResponseDto> findScheduleWithPageV2(Pageable pageable) {
+        String sql = "SELECT * FROM scheduleV2 ORDER BY modified_at DESC LIMIT ? OFFSET ?";
         return jdbcTemplate.query(
                 sql,
                 scheduleRowMapper(),

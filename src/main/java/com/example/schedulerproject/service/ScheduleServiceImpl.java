@@ -75,6 +75,15 @@ public class ScheduleServiceImpl implements ScheduleService{
         return new PageImpl<>(content, pageable, total);
     }
 
+    @Override
+    public Page<FindScheduleResponseDto> findScheduleWithPageV2(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "modifiedAt"));
+        List<FindScheduleResponseDto> content = scheduleRepository.findScheduleWithPageV2(pageable);
+        int total = scheduleRepository.countAll();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
     @Transactional
     @Override
     public UpdateScheduleResponseDto updateSchedule(Long id, UpdateScheduleRequestDto requestDto) {

@@ -25,4 +25,6 @@ public interface ScheduleRepository {
     int countAll();
 
     SaveScheduleResponseDto saveScheduleWithUserId(Schedule newSchedule);
+
+    List<FindScheduleResponseDto> findScheduleWithPageV2(Pageable pageable);
 }

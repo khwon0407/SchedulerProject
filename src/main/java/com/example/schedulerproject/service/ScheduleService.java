@@ -19,4 +19,6 @@ public interface ScheduleService {
     Page<FindScheduleResponseDto> findScheduleWithPage(int page, int size);
 
     SaveScheduleResponseDto saveScheduleWithUserId(Long userId, SaveScheduleRequestDtoV2 requestDto);
+
+    Page<FindScheduleResponseDto> findScheduleWithPageV2(int page, int size);
 }

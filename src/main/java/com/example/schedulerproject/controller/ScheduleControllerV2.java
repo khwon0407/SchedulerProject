@@ -9,6 +9,7 @@ import com.example.schedulerproject.service.MemberService;
 import com.example.schedulerproject.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+//Lv 3. 테이블 추가 및 분리
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/scheduleV2")
@@ -41,5 +43,15 @@ public class ScheduleControllerV2 {
         List<FindScheduleResponseDto> listAllSchedule = scheduleService.findAllScheduleWithUserId(userId);
 
         return new ResponseEntity<>(listAllSchedule, HttpStatus.OK);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<FindScheduleResponseDto>> findScheduleWithPageV2(
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        Page<FindScheduleResponseDto> pagingSchedule = scheduleService.findScheduleWithPageV2(page, size);
+
+        return new ResponseEntity<>(pagingSchedule, HttpStatus.OK);
     }
 }
