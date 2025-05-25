@@ -1,17 +1,27 @@
 package com.example.schedulerproject.repository;
 
+import com.example.schedulerproject.dto.FindScheduleRequestDto;
+import com.example.schedulerproject.dto.FindScheduleResponseDto;
 import com.example.schedulerproject.dto.SaveScheduleResponseDto;
+import com.example.schedulerproject.dto.UpdateScheduleRequestDto;
 import com.example.schedulerproject.entity.Schedule;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
-import java.sql.Time;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -21,6 +31,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     public ScheduleRepositoryImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
+    //Lv 1. 일정 생성
     @Override
     public SaveScheduleResponseDto saveSchedule(Schedule newSchedule) {
 
@@ -45,5 +57,107 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
                 newSchedule.getPassword(),
                 createdAt,
                 createdAt);
+    }
+
+    //Lv 1. 일정 전체 조회
+    @Override
+    public List<FindScheduleResponseDto> findAllSchedule(FindScheduleRequestDto requestDto) {
+        String name = requestDto.getName();
+        LocalDate modifiedAt = requestDto.getModifiedAt();
+
+        if (name != null && modifiedAt == null) {
+            return jdbcTemplate.query("select * from schedule where name = ? order by modified_at desc", scheduleRowMapper(), name);
+        }
+
+        LocalDateTime startOfDay = modifiedAt.atStartOfDay();
+        LocalDateTime endOfDay = modifiedAt.atTime(23, 59, 59);
+
+        Timestamp startTimestamp = Timestamp.valueOf(startOfDay);
+        Timestamp endTimestamp = Timestamp.valueOf(endOfDay);
+
+        if (name != null && modifiedAt != null) {
+            return jdbcTemplate.query("select * from schedule where name = ? and modified_at between ? and ? order by modified_at desc", scheduleRowMapper(), name, startTimestamp, endTimestamp);
+        }
+
+        if (name == null && modifiedAt != null) {
+            return jdbcTemplate.query("select * from schedule where modified_at BETWEEN ? AND ? order by modified_at desc", scheduleRowMapper(), startTimestamp, endTimestamp);
+        }
+
+        return jdbcTemplate.query("select * from schedule", scheduleRowMapper());
+    }
+
+    @Override
+    public List<FindScheduleResponseDto> findAllScheduleWithUserId(Long userId) {
+        return jdbcTemplate.query("select * from scheduleV2 s join memberV2 m on s.user_id = m.id where user_id = ? order by modified_at desc", scheduleRowMapper(), userId);
+    }
+
+    //Lv 1. 일정 단건 조회
+    @Override
+    public Schedule findOneSchedule(Long id) {
+        List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapperV2(), id);
+        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
+    }
+
+    @Override
+    public List<FindScheduleResponseDto> findScheduleWithPage(Pageable pageable) {
+        String sql = "SELECT * FROM schedule ORDER BY modified_at DESC LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(
+                sql,
+                scheduleRowMapper(),
+                pageable.getPageSize(),
+                pageable.getOffset()
+        );
+    }
+
+    @Override
+    public int countAll() {
+        String sql = "SELECT COUNT(*) FROM schedule";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    @Override
+    public int updateSchedule(Long id, UpdateScheduleRequestDto requestDto) {
+        Timestamp modifiedAt = Timestamp.valueOf(LocalDateTime.now());
+        if (requestDto.getName() == null) {
+            return jdbcTemplate.update("update schedule set title = ?, contents = ?, modified_at = ? where id = ?", requestDto.getTitle(), requestDto.getContents(), modifiedAt, id);
+        }
+        return jdbcTemplate.update("update schedule set title = ?, contents = ?, name = ?, modified_at = ? where id = ?", requestDto.getTitle(), requestDto.getContents(), requestDto.getName(), modifiedAt, id);
+    }
+
+    @Override
+    public int deleteMemoById(Long id) {
+        return jdbcTemplate.update("delete from schedule where id = ?", id);
+    }
+
+    private RowMapper<FindScheduleResponseDto> scheduleRowMapper() {
+        return new RowMapper<FindScheduleResponseDto>() {
+            @Override
+            public FindScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new FindScheduleResponseDto(
+                        rs.getLong("id"),
+                        rs.getString("title"),
+                        rs.getString("contents"),
+                        rs.getString("name"),
+                        rs.getTimestamp("modified_at")
+                );
+            }
+        };
+    }
+
+    private RowMapper<Schedule> scheduleRowMapperV2() {
+        return new RowMapper<Schedule>() {
+            @Override
+            public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Schedule(
+                        rs.getLong("id"),
+                        rs.getString("title"),
+                        rs.getString("contents"),
+                        rs.getString("name"),
+                        rs.getString("password"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("modified_at")
+                );
+            }
+        };
     }
 }
