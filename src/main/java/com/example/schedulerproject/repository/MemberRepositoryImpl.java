@@ -32,22 +32,6 @@ public class MemberRepositoryImpl implements MemberRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    /*
-    @Override
-    public void createMember(CreateMemberRequestDto requestDto) {
-        String sql = "INSERT INTO userV2 (name, email, created_at, modified_at) VALUES (?, ?, ?, ?)";
-
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-
-        jdbcTemplate.update(sql,
-                requestDto.getName(),
-                requestDto.getEmail(),
-                now,
-                now
-        );
-    }
-    */
-
     @Override
     public CreateMemberResponseDto createMember(CreateMemberRequestDto requestDto) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);

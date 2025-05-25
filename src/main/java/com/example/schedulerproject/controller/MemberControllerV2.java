@@ -22,7 +22,6 @@ public class MemberControllerV2 {
     @PostMapping
     public ResponseEntity<CreateMemberResponseDto> createMember(@RequestBody @Valid CreateMemberRequestDto requestDto) {
         CreateMemberResponseDto newMember = memberService.createMember(requestDto);
-        //return ResponseEntity.status(HttpStatus.CREATED).body("회원 생성 완료");
         return new ResponseEntity<>(newMember, HttpStatus.CREATED);
     }
 }
