@@ -16,7 +16,8 @@ public class Schedule {
     private String password;
     private Timestamp createdAt;
     private Timestamp modifiedAt;
-
+    
+    //LV 3. 연관 관계 설정
     private Long userId;
 
     public Schedule(Long id, String title, String contents, String name, String password, Timestamp createdAt, Timestamp modifiedAt) {

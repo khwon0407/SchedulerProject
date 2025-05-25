@@ -136,6 +136,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         Schedule findSchedule = scheduleRepository.findOneScheduleV2(id);
 
+        //Lv 5. 비밀번호 확인
         if(!findSchedule.getPassword().equals(requestDto.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Password.");
         }
@@ -161,6 +162,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     public void deleteScheduleById(Long id, DeleteScheduleRequestDto requestDto) {
         Schedule findSchedule = scheduleRepository.findOneSchedule(id);
 
+        //Lv 5. 비밀번호 확인
         if(!findSchedule.getPassword().equals(requestDto.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Password.");
         }
