@@ -2,7 +2,7 @@
 
 
 
-##Lv1 ~ Lv2, Lv4
+## Lv1 ~ Lv2, Lv4
 
 |기능|메서드|URL|request|response|상태코드|
 |---|---|---|---|---|---|
@@ -15,7 +15,7 @@
 
 
 
-##Lv3
+## Lv3
 
 |기능|메서드|URL|request|response|상태코드|
 |---|---|---|---|---|---|
@@ -28,18 +28,18 @@
 |일정 삭제|DELETE|/scheduleV2/{id}|요청 body(비밀번호)|X|200 OK
 
 
-##ERD 다이어그램
+## ERD 다이어그램
 
 Lv1, Lv2 단건 테이블
 
 Lv3 schedule이 foriegn key로 user table의 primary key를 가짐
 
-#최초 작성
+### 최초 작성
 
 ![erd-first](https://github.com/user-attachments/assets/a60144b0-32eb-4f59-bfba-5204305738f3)
 
 
-#최종 작성
+### 최종 작성
 
 ![erd-complete](https://github.com/user-attachments/assets/d5451707-5161-4447-88df-4e3dc00a21c9)
 
