@@ -5,6 +5,7 @@ import com.example.schedulerproject.dto.FindScheduleResponseDto;
 import com.example.schedulerproject.dto.SaveScheduleResponseDto;
 import com.example.schedulerproject.dto.UpdateScheduleRequestDto;
 import com.example.schedulerproject.entity.Schedule;
+import com.example.schedulerproject.exception.NotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -96,13 +97,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     @Override
     public Schedule findOneSchedule(Long id) {
         List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapperV2(), id);
-        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
+        return result.stream().findAny().orElseThrow(NotFoundException::new);
     }
 
     @Override
     public Schedule findOneScheduleV2(Long id) {
         List<Schedule> result = jdbcTemplate.query("select * from scheduleV2 where id = ?", scheduleRowMapperV2(), id);
-        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
+        return result.stream().findAny().orElseThrow(NotFoundException::new);
     }
 
     //Lv 4. 페이징

@@ -3,6 +3,8 @@ package com.example.schedulerproject.service;
 import com.example.schedulerproject.dto.*;
 import com.example.schedulerproject.entity.Member;
 import com.example.schedulerproject.entity.Schedule;
+import com.example.schedulerproject.exception.InvalidPasswordException;
+import com.example.schedulerproject.exception.NotFoundException;
 import com.example.schedulerproject.repository.MemberRepository;
 import com.example.schedulerproject.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -107,13 +109,13 @@ public class ScheduleServiceImpl implements ScheduleService{
         Schedule findSchedule = scheduleRepository.findOneSchedule(id);
 
         if(!findSchedule.getPassword().equals(requestDto.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Password.");
+            throw new InvalidPasswordException();
         }
 
         int updateRow = scheduleRepository.updateSchedule(id, requestDto);
 
         if(updateRow == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+            throw new NotFoundException();
         }
 
         Schedule schedule = scheduleRepository.findOneSchedule(id);
@@ -138,13 +140,13 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         //Lv 5. 비밀번호 확인
         if(!findSchedule.getPassword().equals(requestDto.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Password.");
+            throw new InvalidPasswordException();
         }
 
         int updateRow = scheduleRepository.updateScheduleV2(id, requestDto);
 
         if(updateRow == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+            throw new NotFoundException();
         }
 
         Schedule schedule = scheduleRepository.findOneScheduleV2(id);
