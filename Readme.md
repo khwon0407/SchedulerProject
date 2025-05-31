@@ -6,12 +6,12 @@
 
 |기능|메서드|URL|request|response|상태코드|
 |---|---|---|---|---|---|
-|일정 등록|POST|/schedule|요청 body(제목, 내용, 이름, 비밀번호)|등록 정보|201 CREATED|
-|일정 전체 조회|GET|/schedule|요청 body(이름, 수정일)|조회 결과|200 OK|
+|일정 등록|POST|/schedule|{"title": String, "contents": String, "name": String, "password": String }|등록 정보|201 CREATED|
+|일정 전체 조회|GET|/schedule|{"name": String, "modifiedAt": Datetime}|조회 결과|200 OK|
 |일정 단건 조회|GET|/schedule/{id}|X|조회 결과|200 OK|
-|일정 페이지 조회|GET|/schedule/page|요청 param(페이지 넘버, 페이즈 크기)|조회 결과|200 OK|
-|일정 수정|PATCH|/schedule/{id}|요청 body(제목, 내용, 이름, 비밀번호)|수정 결과|200 OK|
-|일정 삭제|DELETE|/schedule/{id}|요청 body(비밀번호)|X|200 OK|
+|일정 페이지 조회|GET|/schedule/page|?page=int&size=int|조회 결과|200 OK|
+|일정 수정|PATCH|/schedule/{id}|{"title": String, "contents": String, "name": String, "password": String }|수정 결과|200 OK|
+|일정 삭제|DELETE|/schedule/{id}|{"password": String}|X|200 OK|
 
 
 
@@ -19,13 +19,13 @@
 
 |기능|메서드|URL|request|response|상태코드|
 |---|---|---|---|---|---|
-|사람 등록|POST|/memberV2|요청 body(이름, 이메일)|등록 완료|201 CREATED|
-|일정 등록|POST|/scheduleV2|요청 body(제목, 내용, 비밀번호), 요청 param(유저 ID)|등록 결과|201 CREATED|
-|일정 전체 조회|GET|/scheduleV2|요청 param(유저 ID)|조회 결과|200 OK|
+|사람 등록|POST|/memberV2|{"name": String, "email": String}|등록 정보|201 CREATED|
+|일정 등록|POST|/scheduleV2|{"title": String, "contents": String, "password": String }, ?userId=int|등록 결과|201 CREATED|
+|일정 전체 조회|GET|/scheduleV2|?userId=int|조회 결과|200 OK|
 |일정 단건 조회|GET|/scheduleV2/{id}|X|조회 결과|200 OK|
-|일정 페이지 조회|GET|/scheduleV2/page|요청 param(페이지 넘버, 페이즈 크기)|조회 결과|200 OK|
-|일정 수정|PATCH|/scheduleV2/{id}|요청 body(제목, 내용, 비밀번호)|수정 결과|200 OK|
-|일정 삭제|DELETE|/scheduleV2/{id}|요청 body(비밀번호)|X|200 OK
+|일정 페이지 조회|GET|/scheduleV2/page|?page=int&size=int|조회 결과|200 OK|
+|일정 수정|PATCH|/scheduleV2/{id}|{"title": String, "contents": String, "password": String }|수정 결과|200 OK|
+|일정 삭제|DELETE|/scheduleV2/{id}|{"password": String}|X|200 OK
 
 
 ## ERD 다이어그램
